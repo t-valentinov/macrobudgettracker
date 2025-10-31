@@ -70,7 +70,7 @@ const DEFAULT_MACROS = {
     "Pizza Slice (Standard Pepperoni)": { P: 12.0, C: 35.0, F: 14.0, calories: 310, isUnit: true }, // Est. for 1 average large slice (approx 120-140g)
     "Banitsa (with Feta/Sirene)": { P: 13.3, C: 36.4, F: 24.7, calories: 421, isUnit: false }, // Per 100g, average bakery value
     "Whey Protein Scoop (30g)": { P: 21.0, C: 4.5, F: 0.7, calories: 120, isUnit: true },
-    "Whey Protein Scoop (Custom)": { P: 70, C: 15, F: 2.2, calories: 120, isUnit: false },
+    "Whey Protein Scoop (Custom)": { P: 70, C: 15, F: 2.2, calories: 377, isUnit: false },
 };
 
 

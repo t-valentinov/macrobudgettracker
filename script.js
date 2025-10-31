@@ -7,9 +7,22 @@ const PRICES_KEY = 'macroFuelPrices';
 const DEFAULT_MACROS = {
     // --- MEATS & DAIRY CORE (Per 100g unless noted) ---
     "Chicken Breast (Cooked)": { P: 31.0, C: 0, F: 3.6, calories: 165, isUnit: false },
+    "Chicken Legs (Cooked, With Skin)": { P: 24.2, C: 0, F: 8.2, calories: 172, isUnit: false },
+    'Boneless Chicken Thighs': { P: 26.0, C: 0, F: 10.0, calories: 197, isUnit: false },
+    'Chicken Soup (Cooked)': { P: 4.8, C: 4.8, F: 2.4, calories: 60, isUnit: false },
     "Eggs": { P: 6.3, C: 0.6, F: 5.3, calories: 77.5, isUnit: true }, // Per 1 large egg
     "Ground Beef": { P: 17.33, C: 0, F: 2.85, calories: 98, isUnit: false }, // Corrected comma
+    "Beef Steak (Ribeye, Average)": { P: 24.0, C: 0, F: 22.0, calories: 291, isUnit: false },
+    'Pork Mince (Medium)': { P: 21.2, C: 0, F: 13.3, calories: 205, isUnit: false },
+    "Pork Cutlet (Lean Loin Chop)": { P: 25.8, C: 0, F: 13.9, calories: 231, isUnit: false }, // Cooked, Lean Loin
+    "Pork Neck Steak": { P: 18.3, C: 0, F: 13.8, calories: 197, isUnit: false }, // Cooked, Collar/Neck cut
+    'Salmon': { P: 24.0, C: 0, F: 12.0, calories: 208, isUnit: false },
+    'Hake': { P: 17.5, C: 0, F: 1.5, calories: 88, isUnit: false },
     "Canned Tuna": { P: 25.5, C: 0, F: 0.8, calories: 109.2, isUnit: false },
+    'Mackerel (Cooked)': { P: 24.0, C: 0, F: 18.0, calories: 262, isUnit: false },
+    'Sardines (Canned in Oil, Drained)': { P: 25.0, C: 0, F: 11.5, calories: 208, isUnit: false },
+    "Whey Protein Scoop (30g)": { P: 21.0, C: 4.5, F: 0.7, calories: 120, isUnit: true },
+    "Whey Protein Scoop (Custom)": { P: 70, C: 15, F: 2.2, calories: 377, isUnit: false },
 
     // MILK (Per 100g)
     'Milk (Whole - approx. 3.5% F)': { P: 3.3, C: 4.8, F: 3.3, calories: 61, isUnit: false },
@@ -21,29 +34,31 @@ const DEFAULT_MACROS = {
     'Yogurt (Plain, Non-Fat)': { P: 5.7, C: 7.0, F: 0.2, calories: 59, isUnit: false },
     'Yogurt (Greek, Plain, Whole Milk)': { P: 8.5, C: 4.0, F: 6.0, calories: 103, isUnit: false },
     'Skyr (Plain, 0% Fat)': { P: 11.0, C: 3.7, F: 0.2, calories: 61, isUnit: false }, // High protein
+    
 
     // CHEESE (Per 100g)
     'Yellow Cheese (Cheddar)': { P: 24.0, C: 1.3, F: 33.1, calories: 406, isUnit: false },
     'Cottage Cheese (2% F)': { P: 10.5, C: 3.5, F: 2.0, calories: 72, isUnit: false },
-    
-    // --- WHOLEFOODS: MEATS & FISH (Per 100g, Cooked) ---
-    'Pork Mince (Medium)': { P: 21.2, C: 0, F: 13.3, calories: 205, isUnit: false },
-    'Boneless Chicken Thighs': { P: 26.0, C: 0, F: 10.0, calories: 197, isUnit: false },
-    'Salmon': { P: 24.0, C: 0, F: 12.0, calories: 208, isUnit: false },
-    'Hake': { P: 17.5, C: 0, F: 1.5, calories: 88, isUnit: false },
-    "Beef Steak (Ribeye, Average)": { P: 24.0, C: 0, F: 22.0, calories: 291, isUnit: false },
-    "Pork Cutlet (Lean Loin Chop)": { P: 25.8, C: 0, F: 13.9, calories: 231, isUnit: false }, // Cooked, Lean Loin
-    "Pork Neck Steak": { P: 18.3, C: 0, F: 13.8, calories: 197, isUnit: false }, // Cooked, Collar/Neck cut
+    "Bulgarian Yellow Cheese (Kashkaval)": { P: 23.7, C: 3.0, F: 27.0, calories: 350, isUnit: false },
+    "Bulgarian White Cheese (Sirene)": { P: 17.0, C: 0.2, F: 23.0, calories: 276, isUnit: false },
+    'Feta Cheese (Average)': { P: 14.0, C: 4.1, F: 21.0, calories: 264, isUnit: false },
 
     // --- WHOLEFOODS: FATS & OILS (Per 100g) ---
     'Olive Oil': { P: 0, C: 0, F: 100, calories: 884, isUnit: false },
     'Butter': { P: 0.8, C: 0, F: 81.1, calories: 717, isUnit: false },
     'Almonds': { P: 21.2, C: 21.6, F: 49.9, calories: 579, isUnit: false }, // Raw
     'Peanuts': { P: 25.8, C: 16.1, F: 49.2, calories: 567, isUnit: false }, // Raw
+    'Peanut Butter (Smooth)': { P: 25.0, C: 21.0, F: 48.0, calories: 570, isUnit: false },
+    'Cashews (Dry Roasted)': { P: 18.0, C: 30.0, F: 44.0, calories: 553, isUnit: false },
 
     // --- WHOLEFOODS: GRAINS & STARCHES (Per 100g) ---
-    'Wholegrain Bread (Slice)': { P: 2, C: 17, F: 1, calories: 95, isUnit: true },
-    'Rice': { P: 2.7, C: 28.2, F: 0.3, calories: 130, isUnit: false }, // Cooked, white, long-grain
+    'Wholegrain Bread (Slice)': { P: 4.0, C: 13.8, F: 1.1, calories: 82, isUnit: true },
+    'Wholegrain Bread': { P: 12.0, C: 43.0, F: 4.0, calories: 252, isUnit: false },
+    'White Bread (Per 100g)': { P: 8.9, C: 49.0, F: 3.3, calories: 266, isUnit: false },
+    'White Bread (Slice)': { P: 2.5, C: 13.7, F: 0.9, calories: 75, isUnit: true }, // Per 28g slice
+    'Whole Grain Crackers': { P: 9.6, C: 57.0, F: 16.0, calories: 412, isUnit: false },
+    'Rice': { P: 2.7, C: 28.2, F: 0.3, calories: 130, isUnit: false }, // Cooked, white, long-grain]
+    'Rice Cakes (Plain, Brown Rice)': { P: 8.0, C: 81.0, F: 3.0, calories: 385, isUnit: false },
     'Potatoes': { P: 2.5, C: 17.0, F: 0.1, calories: 77, isUnit: false }, // Cooked, boiled/baked
     'Oats': { P: 13.5, C: 68.0, F: 6.9, calories: 389, isUnit: false }, // Dry, uncooked
     
@@ -51,6 +66,7 @@ const DEFAULT_MACROS = {
     'Beans (Kidney)': { P: 8.7, C: 22.8, F: 0.5, calories: 127, isUnit: false },
     'Lentils': { P: 9.0, C: 20.0, F: 0.4, calories: 116, isUnit: false },
     'Chickpeas': { P: 8.9, C: 27.4, F: 2.9, calories: 164, isUnit: false },
+    'Lentil Soup (Cooked)': { P: 6.0, C: 11.5, F: 1.5, calories: 80, isUnit: false },
     
     // --- WHOLEFOODS: FRUITS & VEGETABLES (Per 100g, Raw) ---
     'Apple': { P: 0.3, C: 13.8, F: 0.2, calories: 52, isUnit: false },
@@ -69,8 +85,14 @@ const DEFAULT_MACROS = {
     "Doner Kebab Meat (Large, 130g)": { P: 30.5, C: 0, F: 40.8, calories: 490, isUnit: true },
     "Pizza Slice (Standard Pepperoni)": { P: 12.0, C: 35.0, F: 14.0, calories: 310, isUnit: true }, // Est. for 1 average large slice (approx 120-140g)
     "Banitsa (with Feta/Sirene)": { P: 13.3, C: 36.4, F: 24.7, calories: 421, isUnit: false }, // Per 100g, average bakery value
-    "Whey Protein Scoop (30g)": { P: 21.0, C: 4.5, F: 0.7, calories: 120, isUnit: true },
-    "Whey Protein Scoop (Custom)": { P: 70, C: 15, F: 2.2, calories: 377, isUnit: false },
+    'Dark Chocolate (70-85% Cacao)': { P: 7.8, C: 45.9, F: 42.6, calories: 598, isUnit: false },
+    'Milk Chocolate': { P: 8.5, C: 59.4, F: 30.6, calories: 535, isUnit: false },
+    'Honey': { P: 0.3, C: 82.0, F: 0, calories: 304, isUnit: false },
+    'Donut (Glazed)': { P: 6.5, C: 54.3, F: 15.2, calories: 370, isUnit: false },
+    'Fornetti Pizza (Mini)': { P: 7.3, C: 37.6, F: 16.9, calories: 336, isUnit: false },
+    'Shkembe Chorba (Tripe Soup)': { P: 6.5, C: 4.3, F: 2.9, calories: 70, isUnit: false },
+    'Cake Slice (Vanilla w/ Frosting)': { P: 3.5, C: 50.0, F: 15.0, calories: 350, isUnit: false },
+    'French Fries (Fried)': { P: 3.0, C: 37.0, F: 15.0, calories: 296, isUnit: false },
 };
 
 
@@ -416,11 +438,11 @@ function updatePriceInputLabel() {
     const gramsInput = document.getElementById('priceGramsInput');
     const gramsLabel = document.getElementById('gramsLabel');
     
-    if (food && macros[food]?.isUnit) {
+if (food && macros[food]?.isUnit) {
         gramsLabel.textContent = 'Amount (Unit)';
-        gramsInput.value = 1;
-        gramsInput.disabled = true;
+        gramsInput.disabled = false;
     } else {
+    
         gramsLabel.textContent = 'Amount (g)';
         gramsInput.value = '';
         gramsInput.disabled = false;
@@ -446,11 +468,6 @@ function handleSavePrice() {
     const food = document.getElementById('priceFoodSelect').value;
     let grams = parseFloat(document.getElementById('priceGramsInput').value); 
     const price = parseFloat(document.getElementById('priceCostInput').value);
-
-    // If it's a unit-based food (like Eggs), force grams to 1 if it's invalid/empty.
-    if (food && macros[food]?.isUnit && (isNaN(grams) || grams <= 0)) {
-        grams = 1;
-    }
     
     if (!store || !food || isNaN(grams) || isNaN(price) || grams <= 0 || price <= 0) {
         console.error("Invalid input for price setting.");

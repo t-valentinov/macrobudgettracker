@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Macro & Cost Tracker</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Load SheetJS for XLSX export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.17.4/dist/xlsx.full.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body class="bg-primary-dark min-h-screen text-text-light font-sans p-4 md:p-8">
+
+    <!-- Loading Overlay (Retained for structure, but hidden since local storage is instant) -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-primary-dark bg-opacity-95 z-50 flex items-center justify-center hidden">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-accent-green border-t-transparent border-solid rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-lg text-accent-green">Loading local data...</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-6 md:mb-10">
+            <!-- REMOVED (Local) -->
+            <h1 class="text-4xl md:text-5xl font-extrabold text-accent-green mb-1">MacroFuel Tracker</h1>
+            <!-- REMOVED (Browser Storage) -->
+            <p class="text-lg md:text-xl text-text-light opacity-75">Fuel your gains, track your spending.</p>
+        </header>
+
+        <!-- Main Grid Layout (Stacks on mobile, columns on desktop) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+            
+            <!-- Left Column: Page-based Entry/Management -->
+            <div class="lg:col-span-1 space-y-6 md:space-y-8">
+
+                <!-- Left Column Navigation (switch between pages) -->
+                <div class="flex space-x-2 mb-2">
+                    <button id="navEntryBtn" class="flex-1 px-3 py-2 text-sm font-semibold rounded-lg bg-accent-green text-primary-dark">Log Entry</button>
+                    <button id="navStoresBtn" class="flex-1 px-3 py-2 text-sm font-semibold rounded-lg bg-primary-dark/50 text-text-light">Stores</button>
+                    <button id="navDataBtn" class="flex-1 px-3 py-2 text-sm font-semibold rounded-lg bg-primary-dark/50 text-text-light">Data</button>
+                </div>
+                
+                <!-- 2. Daily Entry Form (page: entry) -->
+                <div id="pageEntry" class="bg-secondary-dark p-4 md:p-6 rounded-xl container-shadow border-t-4 border-accent-blue">
+                    <h2 class="text-2xl font-bold mb-4 pb-2 text-accent-green">Daily Food Log Entry</h2>
+                    <div class="space-y-4">
+
+                        <!-- === ADDED FILTER BUTTONS HERE === -->
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Filter Foods</label>
+                            <div class="flex space-x-2">
+                                <button id="filterAllBtn" class="flex-1 text-sm font-semibold py-2 px-3 rounded-lg transition bg-accent-blue text-primary-dark">All</button>
+                                <button id="filterProteinBtn" class="flex-1 text-sm font-semibold py-2 px-3 rounded-lg transition bg-primary-dark/50 text-text-light">Protein</button>
+                                <button id="filterCarbBtn" class="flex-1 text-sm font-semibold py-2 px-3 rounded-lg transition bg-primary-dark/50 text-text-light">Carbs</button>
+                                <button id="filterFatBtn" class="flex-1 text-sm font-semibold py-2 px-3 rounded-lg transition bg-primary-dark/50 text-text-light">Fats</button>
+                            </div>
+                        </div>
+                        <!-- === END OF ADDED BUTTONS === -->
+                        
+                        <!-- Food Selection -->
+                        <div>
+                            <label for="entryFoodSelect" class="block text-sm font-medium mb-2">Food Item</label>
+                            <select id="entryFoodSelect" class="w-full p-3 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light">
+                                <option value="">-- Select Food --</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Grams/Unit Input -->
+                        <div>
+                            <label for="entryAmountInput" id="entryAmountLabel" class="block text-sm font-medium mb-2">Amount (grams)</label>
+                            <input type="number" id="entryAmountInput" placeholder="Enter amount" min="1" class="w-full p-3 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light">
+                        </div>
+                        
+                        <!-- Store Selection -->
+                        <div>
+                            <label for="entryStoreSelect" class="block text-sm font-medium mb-2">Store Purchased From (Optional)</label>
+                            <select id="entryStoreSelect" class="w-full p-3 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light">
+                                <option value="">-- Manual Cost --</option>
+                            </select>
+                        </div>
+
+                        <!-- Calculated / Manual Cost -->
+                        <div>
+                            <label for="entryCostInput" class="block text-sm font-medium mb-2">Cost ($)</label>
+                            <input type="number" id="entryCostInput" placeholder="Calculated or Manual Cost" step="0.01" class="w-full p-3 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light" disabled>
+                        </div>
+
+                        <!-- Calculated Macros Display -->
+                        <div class="flex justify-between text-base font-medium pt-2">
+                            <span class="text-accent-green">P: <span id="calcProtein">0</span>g</span>
+                            <span class="text-accent-blue">C: <span id="calcCarbs">0</span>g</span>
+                            <span class="text-danger-red">F: <span id="calcFats">0</span>g</span>
+                            <span class="text-text-light">Calories: <span id="calcCalories">0</span></span>
+                            <span class="text-text-light">Cost: $<span id="calcCost">0.00</span></span>
+                        </div>
+
+                        <button id="addEntryBtn" class="w-full bg-accent-blue hover:bg-opacity-80 transition py-3 rounded-lg text-primary-dark font-bold text-lg shadow-2xl mt-4">Log Entry</button>
+                    </div>
+                </div>
+
+                <!-- Store and Pricing Management (page: stores) -->
+                <div id="pageStores" class="bg-secondary-dark p-4 md:p-6 rounded-xl container-shadow hidden">
+                    <div class="flex justify-between items-center w-full text-2xl font-bold pb-2 text-text-light">
+                        <div>Store & Price Management</div>
+                    </div>
+                    <div id="storeManagementContent" class="space-y-4 pt-2">
+                        
+                        <!-- Add New Store -->
+                        <div class="mb-4">
+                            <label for="newStoreName" class="block text-sm font-medium mb-2">Add New Store</label>
+                            <div class="flex space-x-2">
+                                <input type="text" id="newStoreName" placeholder="e.g., Global Grocer" class="flex-grow p-2 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light">
+                                <button id="addStoreBtn" class="bg-accent-blue hover:bg-opacity-80 transition p-2 rounded-lg text-primary-dark font-semibold whitespace-nowrap shadow-lg text-sm md:text-base">+ Add Store</button>
+                            </div>
+                        </div>
+
+                        <!-- Set Food Prices per Store -->
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 border-t border-secondary-dark pt-3">Set Food Prices</h3>
+                            <div id="priceSettingForm" class="space-y-3">
+                                <div>
+                                    <label for="priceStoreSelect" class="block text-xs font-medium mb-1">Select Store</label>
+                                    <select id="priceStoreSelect" class="w-full p-2 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light">
+                                        <option value="">-- Select Store --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="priceFoodSelect" class="block text-xs font-medium mb-1">Select Food</label>
+                                    <select id="priceFoodSelect" class="w-full p-2 rounded-lg bg-primary-dark border border-secondary-dark focus:border-accent-green focus:outline-none text-text-light">
+                                        <option value="">-- Select Food --</option>
+                                    </select>
+                                </div>
+                                <div class="flex space-x-2 items-end">
+                                    <div class="flex-1">
+                                        <label id="gramsLabel" for="priceGramsInput" class="block text-xs font-medium mb-1">Amount (g)</label>
+                                        <input type="number" id="priceGramsInput" placeholder="e.g., 500" class="w-full p-2 rounded-lg bg-primary-dark border border-secondary-dark focus:border-green-500 focus:outline-none text-text-light">
+                                    </div>
+                                    <div class="flex-1">
+                                        <label for="priceCostInput" class="block text-xs font-medium mb-1">Price ($)</label>
+                                        <input type="number" id="priceCostInput" placeholder="e.g., 8.99" step="0.01" class="w-full p-2 rounded-lg bg-primary-dark border border-secondary-dark focus:border-green-500 focus:outline-none text-text-light">
+                                    </div>
+                                    <button id="savePriceBtn" class="bg-accent-green hover:bg-opacity-80 transition p-2 rounded-lg text-primary-dark font-semibold whitespace-nowrap shadow-lg text-sm md:text-base">Save Price</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Export / Import Stores JSON -->
+                        <div class="mt-4">
+                            <h3 class="text-lg font-semibold mb-2 border-t border-secondary-dark pt-3">Stores Import / Export</h3>
+                            <div class="flex space-x-2">
+                                <button id="exportStoresBtn" class="flex-1 bg-accent-blue hover:bg-opacity-80 transition py-2 rounded-lg text-primary-dark font-semibold">Export Stores JSON</button>
+                                <button id="importStoresBtn" class="flex-1 bg-accent-green hover:bg-opacity-80 transition py-2 rounded-lg text-primary-dark font-semibold">Import Stores JSON</button>
+                                <input type="file" id="importStoresFile" accept="application/json" class="hidden">
+                            </div>
+                            <p class="text-xs opacity-70 mt-2">Export will download your stores and prices as JSON. Import will merge imported stores/prices into existing data.</p>
+                        </div>
+
+                        <!-- Current Stores List (with delete) -->
+                        <div class="mt-4">
+                            <h3 class="text-lg font-semibold mb-2 border-t border-secondary-dark pt-3">Current Stores</h3>
+                            <div id="storesList" class="space-y-2">
+                                <!-- Rendered list of stores with delete buttons -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Management (page: data) -->
+                <div id="pageData" class="bg-secondary-dark p-4 md:p-6 rounded-xl container-shadow hidden">
+                    <div class="flex justify-between items-center w-full text-2xl font-bold pb-2 text-text-light">
+                        <div>Data Management</div>
+                    </div>
+                    <div id="dataManagementContent" class="space-y-4 pt-2">
+                        <div class="flex items-center justify-center space-x-4">
+                            <span class="text-sm font-medium">CSV</span>
+                            <label for="exportFormatToggle" class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="exportFormatToggle" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            </label>
+                            <span class="text-sm font-medium">XLSX</span>
+                        </div>
+                        <button id="exportDailyBtn" class="w-full bg-accent-green hover:bg-opacity-80 transition py-3 rounded-lg text-primary-dark font-bold">
+                            Export Today's Log
+                        </button>
+                        <button id="exportTotalBtn" class="w-full bg-accent-blue hover:bg-opacity-80 transition py-3 rounded-lg text-primary-dark font-bold">
+                            Export Total History
+                        </button>
+                        <div class="mt-2">
+                            <button id="importBtn" class="w-full bg-primary-dark/70 hover:bg-opacity-80 transition py-3 rounded-lg text-text-light font-bold">Import History</button>
+                            <input type="file" id="importFile" accept=".csv,.xlsx,.xls" class="hidden">
+                        </div>
+                        <button id="resetHistoryBtn" class="w-full bg-danger-red hover:bg-opacity-80 transition py-3 rounded-lg text-text-light font-bold">
+                            <span id="resetText">Reset All History (DANGER)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Data Table and Totals -->
+            <div class="lg:col-span-2">
+                <div class="bg-secondary-dark p-4 md:p-6 rounded-xl container-shadow h-full flex flex-col">
+                    
+                    <!-- View Header and Toggles -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-b border-accent-blue pb-2">
+                        <h2 id="logTitle" class="text-3xl font-bold text-accent-green mb-3 sm:mb-0">Today's Log</h2>
+                        <div class="flex space-x-2 p-1 bg-primary-dark rounded-xl shadow-inner">
+                            <button id="toggleDailyBtn" onclick="switchView('daily')" class="px-4 py-2 text-sm font-semibold rounded-lg bg-accent-green text-primary-dark transition">Today</button>
+                            <button id="toggleHistoryBtn" onclick="switchView('history')" class="px-4 py-2 text-sm font-semibold rounded-lg bg-primary-dark/50 text-text-light transition">History</button>
+                        </div>
+                    </div>
+
+                    <!-- 1. DAILY VIEW -->
+                    <div id="dailyView" class="flex-grow flex flex-col">
+                        <div class="overflow-x-auto overflow-y-auto mb-4 flex-grow" style="max-height: 65vh;">
+                            <table class="min-w-full text-sm text-left text-text-light">
+                                <thead class="text-xs uppercase bg-primary-dark sticky top-0">
+                                    <tr>
+                                        <th scope="col" class="px-3 py-3 rounded-tl-lg">Food</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Protein (g)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Carbs (g)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Fats (g)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Calories</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Cost ($)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Time</th>
+                                        <th scope="col" class="px-3 py-3 rounded-tr-lg text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logTableBody">
+                                    <!-- Daily log rows will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Daily Totals Display -->
+                        <div class="mt-auto pt-4 border-t-2 border-accent-blue bg-primary-dark/50 p-4 rounded-b-xl">
+                            <h3 class="text-xl font-bold mb-2">Daily Totals</h3>
+                            <div id="totalsRow" class="grid grid-cols-5 gap-4 text-center text-lg font-extrabold">
+                                <div class="bg-primary-dark p-3 rounded-lg text-accent-green">P: <span id="totalProtein">0</span>g</div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-accent-blue">C: <span id="totalCarbs">0</span>g</div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-danger-red">F: <span id="totalFats">0</span>g</div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-text-light">Calories: <span id="totalCalories">0</span></div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-text-light">Cost: $<span id="totalCost">0.00</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 2. HISTORY VIEW (Hidden by Default) -->
+                    <div id="historyView" class="hidden flex-grow flex-col">
+                        <div class="overflow-x-auto overflow-y-auto mb-4 flex-grow" style="max-height: 65vh;">
+                            <table class="min-w-full text-sm text-left text-text-light">
+                                <thead class="text-xs uppercase bg-primary-dark sticky top-0">
+                                    <tr>
+                                        <th scope="col" class="px-3 py-3 rounded-tl-lg">Date</th>
+                                        <th scope="col" class."px-3 py-3">Food</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Protein (g)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Carbs (g)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Fats (g)</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Calories</th>
+                                        <th scope="col" class="px-3 py-3 text-center">Cost ($)</th>
+                                        <th scope="col" class="px-3 py-3 rounded-tr-lg text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTableBody">
+                                    <!-- History log rows will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- History Totals Display -->
+                        <div class="mt-auto pt-4 border-t-2 border-accent-blue bg-primary-dark/50 p-4 rounded-b-xl">
+                            <h3 class="text-xl font-bold mb-2">Grand Totals (All History)</h3>
+                            <div id="historyTotalsRow" class="grid grid-cols-5 gap-4 text-center text-lg font-extrabold">
+                                <div class="bg-primary-dark p-3 rounded-lg text-accent-green">P: <span id="historyTotalProtein">0</span>g</div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-accent-blue">C: <span id="historyTotalCarbs">0</span>g</div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-danger-red">F: <span id="historyTotalFats">0</span>g</div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-text-light">Calories: <span id_historyTotalCalories">0</span></div>
+                                <div class="bg-primary-dark p-3 rounded-lg text-text-light">Cost: $<span id="historyTotalCost">0.00</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Confirmation Modal (Hidden by Default) -->
+    <div id="confirmationModal" class="fixed inset-0 bg-primary-dark bg-opacity-90 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-secondary-dark p-8 rounded-xl container-shadow max-w-sm w-full text-center border-2 border-danger-red">
+            <h3 class="text-2xl font-bold text-danger-red mb-4">Confirm Reset</h3>
+            <p class="mb-6 text-text-light">Are you sure you want to delete ALL logged history? This action cannot be undone.</p>
+            <div class="flex justify-around space-x-4">
+                <button id="confirmResetBtn" class="flex-1 bg-danger-red hover:bg-opacity-80 transition py-2 rounded-lg text-text-light font-bold">Yes, Delete All</button>
+                <button id="cancelResetBtn" class="flex-1 bg-accent-blue hover:bg-opacity-80 transition py-2 rounded-lg text-primary-dark font-bold">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    
+</body>
+</html>

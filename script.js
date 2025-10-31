@@ -42,7 +42,7 @@ const DEFAULT_MACROS = {
     'Peanuts': { P: 25.8, C: 16.1, F: 49.2, calories: 567, isUnit: false }, // Raw
 
     // --- WHOLEFOODS: GRAINS & STARCHES (Per 100g) ---
-    'Wholegrain Bread': { P: 12.0, C: 43.0, F: 4.0, calories: 252, isUnit: false },
+    'Wholegrain Bread (Slice)': { P: 4, C: 17, F: 1, calories: 252, isUnit: false },
     'Rice': { P: 2.7, C: 28.2, F: 0.3, calories: 130, isUnit: false }, // Cooked, white, long-grain
     'Potatoes': { P: 2.5, C: 17.0, F: 0.1, calories: 77, isUnit: false }, // Cooked, boiled/baked
     'Oats': { P: 13.5, C: 68.0, F: 6.9, calories: 389, isUnit: false }, // Dry, uncooked

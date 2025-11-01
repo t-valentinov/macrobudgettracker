@@ -34,7 +34,7 @@ const DEFAULT_MACROS = {
     'Yogurt (Plain, Non-Fat)': { P: 5.7, C: 7.0, F: 0.2, calories: 59, isUnit: false },
     'Yogurt (Greek, Plain, Whole Milk)': { P: 8.5, C: 4.0, F: 6.0, calories: 103, isUnit: false },
     'Skyr (Plain, 0% Fat)': { P: 11.0, C: 3.7, F: 0.2, calories: 61, isUnit: false }, // High protein
-    'Bulgarian Yogurt (2% F)': { P: 4.7, C: 4.1, F: 2.0, calories: 65, isUnit: false },
+    'Bulgarian Yogurt (2% F)': { P: 3.2, C: 3.7, F: 1.3, calories: 65, isUnit: false },
     'Bulgarian Yogurt (3.5% F)': { P: 3.2, C: 4.2, F: 3.6, calories: 62, isUnit: false },
     'Bulgarian Yogurt (4.5% F)': { P: 3.3, C: 4.3, F: 4.5, calories: 71, isUnit: false },
     
@@ -45,6 +45,9 @@ const DEFAULT_MACROS = {
     "Bulgarian Yellow Cheese (Kashkaval)": { P: 23.7, C: 3.0, F: 27.0, calories: 350, isUnit: false },
     "Bulgarian White Cheese (Sirene)": { P: 17.0, C: 0.2, F: 23.0, calories: 276, isUnit: false },
     'Feta Cheese (Average)': { P: 14.0, C: 4.1, F: 21.0, calories: 264, isUnit: false },
+    'Low-fat Quark': { P: 12.0, C: 4.1, F: 0.2, calories: 66, isUnit: false },
+    '20% Fat Quark': { P: 10.8, C: 3.6, F: 4.4, calories: 97, isUnit: false },
+    '40% Fat Quark': { P: 9.0, C: 3.2, F: 10.3, calories: 142, isUnit: false },
 
     // --- WHOLEFOODS: FATS & OILS (Per 100g) ---
     'Olive Oil': { P: 0, C: 0, F: 100, calories: 884, isUnit: false },
@@ -90,6 +93,9 @@ const DEFAULT_MACROS = {
     "Banitsa (with Feta/Sirene)": { P: 13.3, C: 36.4, F: 24.7, calories: 421, isUnit: false }, // Per 100g, average bakery value
     'Dark Chocolate (70-85% Cacao)': { P: 7.8, C: 45.9, F: 42.6, calories: 598, isUnit: false },
     'Milk Chocolate': { P: 8.5, C: 59.4, F: 30.6, calories: 535, isUnit: false },
+    'Halva': { P: 15.5, C: 42, F: 38, calories: 580, isUnit: false },
+    'Lukum': { P: 0, C: 85, F: 0, calories: 340, isUnit: false },
+    'Quark dessert': { P: 11, C: 35, F: 24, calories: 340, isUnit: false },
     'Honey': { P: 0.3, C: 82.0, F: 0, calories: 304, isUnit: false },
     'Donut (Glazed)': { P: 6.5, C: 54.3, F: 15.2, calories: 370, isUnit: false },
     'Fornetti Pizza (Mini)': { P: 7.3, C: 37.6, F: 16.9, calories: 336, isUnit: false },

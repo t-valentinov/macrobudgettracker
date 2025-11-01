@@ -34,6 +34,9 @@ const DEFAULT_MACROS = {
     'Yogurt (Plain, Non-Fat)': { P: 5.7, C: 7.0, F: 0.2, calories: 59, isUnit: false },
     'Yogurt (Greek, Plain, Whole Milk)': { P: 8.5, C: 4.0, F: 6.0, calories: 103, isUnit: false },
     'Skyr (Plain, 0% Fat)': { P: 11.0, C: 3.7, F: 0.2, calories: 61, isUnit: false }, // High protein
+    'Bulgarian Yogurt (2% F)': { P: 4.7, C: 4.1, F: 2.0, calories: 65, isUnit: false },
+    'Bulgarian Yogurt (3.5% F)': { P: 3.2, C: 4.2, F: 3.6, calories: 62, isUnit: false },
+    'Bulgarian Yogurt (4.5% F)': { P: 3.3, C: 4.3, F: 4.5, calories: 71, isUnit: false },
     
 
     // CHEESE (Per 100g)

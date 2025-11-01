@@ -92,10 +92,11 @@ const DEFAULT_MACROS = {
     'Fornetti Pizza (Mini)': { P: 7.3, C: 37.6, F: 16.9, calories: 336, isUnit: false },
     'Shkembe Chorba (Tripe Soup)': { P: 6.5, C: 4.3, F: 2.9, calories: 70, isUnit: false },
     'Cake Slice (Vanilla w/ Frosting)': { P: 3.5, C: 50.0, F: 15.0, calories: 350, isUnit: false },
-    'French Fries (Fried)': { P: 3.0, C: 37.0, F: 15.0, calories: 296, isUnit: false },
-    'Protein (Custom Logging)': { P: 100, C: 0, F: 0, calories: 400, isUnit: false },
-    'Carbs (Custom Logging)': { P: 0, C: 100, F: 0, calories: 400, isUnit: false },
-    'Fats (Custom Logging)': { P: 0, C: 0, F: 100, calories: 900, isUnit: false },
+    'French Fries (Fried)': { P: 3.0, C: 37.0, F: 15.0, calories: 0, isUnit: false },
+    'Protein (Custom Logging)': { P: 100, C: 0, F: 0, calories: 0, isUnit: false },
+    'Carbs (Custom Logging)': { P: 0, C: 100, F: 0, calories: 0, isUnit: false },
+    'Fats (Custom Logging)': { P: 0, C: 0, F: 100, calories: 0, isUnit: false },
+    'Calories (Custom Logging)': { P: 0, C: 0, F: 0, calories: 100, isUnit: false },
 };
 
 

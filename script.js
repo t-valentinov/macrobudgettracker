@@ -22,21 +22,25 @@ const DEFAULT_MACROS = {
     'Mackerel (Cooked)': { P: 24.0, C: 0, F: 18.0, calories: 262, isUnit: false },
     'Sardines (Canned in Oil, Drained)': { P: 25.0, C: 0, F: 11.5, calories: 208, isUnit: false },
     "Whey Protein Scoop (30g)": { P: 21.0, C: 4.5, F: 0.7, calories: 120, isUnit: true },
-    "Whey Protein Scoop (Custom)": { P: 70, C: 15, F: 2.2, calories: 377, isUnit: false },
+    "Whey Protein Scoop (Per 100g)": { P: 70, C: 15, F: 2.2, calories: 377, isUnit: false },
+    "Protein Bar": { P: 20, C: 25, F: 7, calories: 245, isUnit: true },
 
-    // MILK (Per 100g)
-    'Milk (Whole - approx. 3.5% F)': { P: 3.3, C: 4.8, F: 3.3, calories: 61, isUnit: false },
-    'Milk (Semi-Skimmed - approx. 1.8% F)': { P: 3.6, C: 4.8, F: 1.8, calories: 48, isUnit: false },
-    'Milk (Skimmed - approx. 0.1% F)': { P: 3.5, C: 4.8, F: 0.1, calories: 35, isUnit: false },
-    // YOGURT & SKYR (Plain, Per 100g)
-    'Yogurt (Plain, Whole Milk)': { P: 3.5, C: 4.7, F: 3.5, calories: 61, isUnit: false },
-    'Yogurt (Plain, Low Fat)': { P: 5.0, C: 7.0, F: 2.0, calories: 63, isUnit: false },
-    'Yogurt (Plain, Non-Fat)': { P: 5.7, C: 7.0, F: 0.2, calories: 59, isUnit: false },
-    'Yogurt (Greek, Plain, Whole Milk)': { P: 8.5, C: 4.0, F: 6.0, calories: 103, isUnit: false },
-    'Skyr (Plain, 0% Fat)': { P: 11.0, C: 3.7, F: 0.2, calories: 61, isUnit: false }, // High protein
-    'Bulgarian Yogurt (2% F)': { P: 3.2, C: 3.7, F: 1.3, calories: 65, isUnit: false },
-    'Bulgarian Yogurt (3.5% F)': { P: 3.2, C: 4.2, F: 3.6, calories: 62, isUnit: false },
+// Corrected protein amounts reflecting USDA slight increase in protein concentration when fat is removed.
+    'Milk (Whole - 3.5% F)': { P: 3.2, C: 4.7, F: 3.3, calories: 61, isUnit: false },
+    'Milk (Reduced Fat - 2% F)': { P: 3.4, C: 4.9, F: 2.0, calories: 50, isUnit: false },
+    'Milk (Lowfat - 1.5% F)': { P: 3.4, C: 4.7, F: 1.5, calories: 46, isUnit: false },
+    'Milk (Skimmed - 0.1% F)': { P: 3.4, C: 5.1, F: 0.1, calories: 35, isUnit: false },
+// --- YOGURT: BULGARIAN STYLE (Traditional, Per 100g) ---
+    // Note: Traditional Bulgarian yogurt protein is often slightly lower (3.2-3.3g) than Western plain yogurt (3.5g).
+    'Bulgarian Yogurt (2% F)': { P: 3.2, C: 4.2, F: 2.0, calories: 54, isUnit: false }, // Adjusted based on 3.2g P, 2% F
+    'Bulgarian Yogurt (3.5% F)': { P: 3.2, C: 4.2, F: 3.5, calories: 62, isUnit: false },
     'Bulgarian Yogurt (4.5% F)': { P: 3.3, C: 4.3, F: 4.5, calories: 71, isUnit: false },
+    
+    // --- YOGURT: STRAINED/GREEK STYLE (High Protein, Per 100g) ---
+    // Greek/Strained yogurt has higher protein and generally lower carbs (lactose removed via straining).
+    'Yogurt (Greek, Plain, Non-Fat)': { P: 10.0, C: 4.0, F: 0.4, calories: 59, isUnit: false },
+    'Yogurt (Greek, Plain, Whole Milk)': { P: 8.5, C: 4.0, F: 6.0, calories: 103, isUnit: false },
+    'Skyr (Plain, 0% Fat)': { P: 11.0, C: 3.7, F: 0.2, calories: 61, isUnit: false },
     
 
     // CHEESE (Per 100g)
@@ -56,6 +60,8 @@ const DEFAULT_MACROS = {
     'Peanuts': { P: 25.8, C: 16.1, F: 49.2, calories: 567, isUnit: false }, // Raw
     'Peanut Butter (Smooth)': { P: 25.0, C: 21.0, F: 48.0, calories: 570, isUnit: false },
     'Cashews (Dry Roasted)': { P: 18.0, C: 30.0, F: 44.0, calories: 553, isUnit: false },
+    'Lard (Rendered Pork Fat)': { P: 0.0, C: 0.0, F: 100.0, calories: 902, isUnit: false },
+    'Salo (Cured Pork Fatback)': { P: 2.5, C: 0.0, F: 95.0, calories: 865, isUnit: false }, // Average for cured fatback
 
     // --- WHOLEFOODS: GRAINS & STARCHES (Per 100g) ---
     'Wholegrain Bread (Slice)': { P: 4.0, C: 13.8, F: 1.1, calories: 82, isUnit: true },
@@ -101,11 +107,15 @@ const DEFAULT_MACROS = {
     'Fornetti Pizza (Mini)': { P: 7.3, C: 37.6, F: 16.9, calories: 336, isUnit: false },
     'Shkembe Chorba (Tripe Soup)': { P: 6.5, C: 4.3, F: 2.9, calories: 70, isUnit: false },
     'Cake Slice (Vanilla w/ Frosting)': { P: 3.5, C: 50.0, F: 15.0, calories: 350, isUnit: false },
-    'French Fries (Fried)': { P: 3.0, C: 37.0, F: 15.0, calories: 0, isUnit: false },
+    'French Fries (Fried)': { P: 3.0, C: 37.0, F: 15.0, calories: 300, isUnit: false },
     'Protein (Custom Logging)': { P: 100, C: 0, F: 0, calories: 0, isUnit: false },
     'Carbs (Custom Logging)': { P: 0, C: 100, F: 0, calories: 0, isUnit: false },
     'Fats (Custom Logging)': { P: 0, C: 0, F: 100, calories: 0, isUnit: false },
     'Calories (Custom Logging)': { P: 0, C: 0, F: 0, calories: 100, isUnit: false },
+    'Pastarma (Cured Beef/Pastrami)': { P: 22.0, C: 0.4, F: 6.0, calories: 147, isUnit: false }, // Similar to Pastrami/Cured Beef
+    'Prosciutto (Raw Ham)': { P: 26.0, C: 0.5, F: 18.0, calories: 270, isUnit: false }, // Average for Prosciutto di Parma with fat
+    'Kolbas (Dry Salami/Cured Pork)': { P: 21.0, C: 1.0, F: 32.0, calories: 378, isUnit: false }, // Average Dry/Hard Salami
+    'Smoked Pork Fillet (Processed)': { P: 23.0, C: 1.0, F: 1.8, calories: 110, isUnit: false }, // Smoked pork loin/tenderloin
 };
 
 

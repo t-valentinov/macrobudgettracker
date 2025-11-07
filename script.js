@@ -10,6 +10,7 @@ const DEFAULT_MACROS = {
     "Chicken Legs (Cooked, With Skin)": { P: 24.2, C: 0, F: 8.2, calories: 172, isUnit: false },
     'Boneless Chicken Thighs': { P: 26.0, C: 0, F: 10.0, calories: 197, isUnit: false },
     'Chicken Soup (Cooked)': { P: 4.8, C: 4.8, F: 2.4, calories: 60, isUnit: false },
+    'Chicken Liver (Cooked)': { P: 26.0, C: 1.0, F: 6.5, calories: 172, isUnit: false },
     "Eggs": { P: 6.3, C: 0.6, F: 5.3, calories: 77.5, isUnit: true }, // Per 1 large egg
     "Ground Beef": { P: 17.33, C: 0, F: 2.85, calories: 98, isUnit: false }, // Corrected comma
     "Beef Steak (Ribeye, Average)": { P: 24.0, C: 0, F: 22.0, calories: 291, isUnit: false },
